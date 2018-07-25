@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"../logfiles"
 	"strings"
 	"time"
+
+	"../logfiles"
 
 	"github.com/spf13/cobra"
 )
@@ -12,7 +13,9 @@ import (
 var PlotFileName string
 var RLMId string
 var RtDiagVar string
+var JsonDiagVar string
 var RtDiagOptions []string
+var JsonDiagOptions []string
 var OptCPUTemp bool
 var longHelp string
 
@@ -26,6 +29,7 @@ var plotCmd = &cobra.Command{
 func init() {
 
 	longHelp = `This is the long help`
+	plotCmd.Flags().StringVarP(&JsonDiagVar, "jsondiag", "j", "", "extract dashboard stats from the JSON string uploads")
 	plotCmd.Flags().StringVarP(&RtDiagVar, "rtdiag", "r", "", "plot rt rlm_diag_data. provide list")
 	plotCmd.Flags().BoolVarP(&OptCPUTemp, "cputemp", "t", false, "plot CPU temperature")
 	plotCmd.Flags().StringVarP(&RLMId, "rlmid", "i", "RL00000", "Id of the RLM")
@@ -60,6 +64,10 @@ func execPlotCmd(cmd *cobra.Command, args []string) {
 			}
 		}
 	}
+	if len(JsonDiagOptions) > 0 {
+		JsonDiagOptions = strings.Split(JsonDiagVar, ",")
+	}
+
 	if len(args) < 1 {
 		fmt.Printf("Need some files to process\n")
 		return
