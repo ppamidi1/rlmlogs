@@ -25,61 +25,6 @@ func init() {
 
 }
 
-func ValidItem(nm string) bool {
-	for _, opt := range itemNames {
-		if nm == opt {
-			return true
-		}
-	}
-	return false
-}
-func ShowValidItems() {
-	for _, opt := range itemNames {
-		fmt.Printf("%s\n", opt)
-	}
-}
-func Index(nm string) int {
-	for i, opt := range itemNames {
-		if nm == opt {
-			return i
-		}
-	}
-	return -1
-}
-
-func SetupStats(nm string) {
-	if ValidItem(nm) {
-		idx := Index(nm)
-		gatheredStats[idx] = New(nm)
-		switch idx {
-		case FI:
-			gatheredStats[FI].Extractor = regexp.MustCompile("([0-9]+)")
-		case FO:
-			gatheredStats[FO].Extractor = regexp.MustCompile("([0-9]+)")
-		case FD:
-			gatheredStats[FD].Extractor = regexp.MustCompile("([0-9]+)")
-		case CPU_Usage:
-			gatheredStats[CPU_Usage].Extractor = regexp.MustCompile("([0-9]+)%")
-		case Up_Time:
-			gatheredStats[Up_Time].Extractor = regexp.MustCompile("([0-9]+)")
-		case Pct_Mem_Used_sys:
-			gatheredStats[Pct_Mem_Used_sys].Extractor = regexp.MustCompile("([0-9]+\\.[0-9]+)")
-		case Mem_Used_sys:
-			gatheredStats[Mem_Used_sys].Extractor = regexp.MustCompile("([0-9]+)")
-		case Mem_Free_sys:
-			gatheredStats[Mem_Free_sys].Extractor = regexp.MustCompile("([0-9]+)")
-		case Mem_Used_rlc:
-			gatheredStats[Mem_Used_rlc].Extractor = regexp.MustCompile("([0-9]+)")
-		case Processes:
-			gatheredStats[Processes].Extractor = regexp.MustCompile("([0-9]+)")
-		}
-	} else {
-		if nm == "CPUTemp" {
-			cpuTempStats = New("CPUTemp")
-		}
-	}
-}
-
 func ExtractTimeStamp(line string) (time.Time, error) {
 	timstr := line[0:TimeStampLength]
 	val, err := time.Parse(time.StampMicro, timstr)
