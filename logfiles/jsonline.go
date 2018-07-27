@@ -2,6 +2,7 @@ package logfiles
 
 import (
 	"encoding/json"
+	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -152,4 +153,10 @@ func ValidTag(t string) bool {
 		}
 	}
 	return false
+}
+
+func ShowValidTags() {
+	for _, tag := range jsonTags {
+		fmt.Printf("%s\n", tag)
+	}
 }

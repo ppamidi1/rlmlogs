@@ -65,3 +65,7 @@ func TestCollectStatsJsonLine(t *testing.T) {
 	CollectStatsJsonLine(time.Now(), jsontestline1)
 	taggedStats["Stream_Quality_int"].show()
 }
+
+func TestShowValidTags(t *testing.T) {
+	ShowValidTags()
+}

@@ -119,6 +119,11 @@ func AnalyzeFile(rdr io.Reader, base time.Time) {
 				if found {
 					connectionStatus = true
 					connectionStatusTime = attime
+				} else {
+					foundj, attimej := IsJsonStatLine(line)
+					if foundj {
+						CollectStatsJsonLine(attimej, line)
+					}
 				}
 			}
 		}

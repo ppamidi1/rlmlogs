@@ -55,7 +55,6 @@ func execPlotCmd(cmd *cobra.Command, args []string) {
 				fmt.Printf("Analyzing %s\n", opt)
 			}
 			if logfiles.ValidItem(opt) {
-				fmt.Printf("\t%s\n", opt)
 				logfiles.SetupStats(opt)
 			} else {
 				fmt.Printf("\t%s is not a valid rtdiag item\n", opt)
@@ -64,8 +63,20 @@ func execPlotCmd(cmd *cobra.Command, args []string) {
 			}
 		}
 	}
-	if len(JsonDiagOptions) > 0 {
+	if len(JsonDiagVar) > 0 {
 		JsonDiagOptions = strings.Split(JsonDiagVar, ",")
+		for _, opt := range JsonDiagOptions {
+			if Verbose {
+				fmt.Printf("Analyzing %s from JSON formatted lines", opt)
+			}
+			if logfiles.ValidTag(opt) {
+				logfiles.SetupTag(opt)
+			} else {
+				fmt.Printf("\t%s is not a known JSON tag", opt)
+				logfiles.ShowValidTags()
+				return
+			}
+		}
 	}
 
 	if len(args) < 1 {

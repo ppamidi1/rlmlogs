@@ -98,4 +98,7 @@ func GeneratePlots(nm string, title string) {
 			chart.Plot(itemNames[idx]+nm, title)
 		}
 	}
+	for k, v := range taggedStats {
+		v.Plot(k+nm, title)
+	}
 }
