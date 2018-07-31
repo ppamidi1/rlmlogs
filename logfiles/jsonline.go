@@ -94,6 +94,28 @@ upload_stats.py[717]: {"vst": 1158601, "itc": 55990, "MemRLC": 64256, "filename"
 	"cpu": 15,
 	"nmc": 0
 }
+
+{
+“MemRLC”: “Currently used RAM for the RLC-process”,
+"filename": “Name of the generated stats file this dataset is based on",
+"dVST": “Seconds video has been streamed between the last and current dataset”,
+"MemSystem": “Currently used RAM of the device”,
+"Bearer_Change": “If there was a bearer-change between last and current dataset, this equals to 1, otherwise 0”,
+"machine": "Main string for distinguishing different machines, style: RL00123, TU12345…",
+“dPC”: ”delta PanicCount, 1 if there was a panic between last and current dataset, 0 otherwise”,
+“dRC”: ”delta RestartCount, 1 if there was a restart between last and current dataset, 0 otherwise”,
+"time_formatted": "QoL Timestamp for human readability",
+"Stream_Quality_int": “10 if high quality, 5 if low, 0 if no stream”,
+"Stream_Quality": "Redundant to _int",
+"Up Time": “seconds since last reboot (si.uptime)”,
+"date": “Used for the timeline in kibana”,
+"lasttime": “Last datasets date (currently unused)”,
+"first_from_rlm": "True if the software got reset, False otherwise”,
+"Active Bearer": "Ethernet, Wifi (with name) or none",
+"Stream_Quality_change": “Compare to Bearer change, signals Steam_Quality_changes”,
+"dT": “delta Time since last dataset (seconds)”
+}
+
 */
 
 var jsonlineExp *regexp.Regexp
