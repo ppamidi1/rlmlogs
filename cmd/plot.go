@@ -18,6 +18,7 @@ var RtDiagOptions []string
 var JsonDiagOptions []string
 var OptCPUTemp bool
 var longHelp string
+var OptCombined bool
 
 var plotCmd = &cobra.Command{
 	Use:   "plot",
@@ -34,6 +35,7 @@ func init() {
 	plotCmd.Flags().BoolVarP(&OptCPUTemp, "cputemp", "t", false, "plot CPU temperature")
 	plotCmd.Flags().StringVarP(&RLMId, "rlmid", "i", "RL00000", "Id of the RLM")
 	plotCmd.Flags().StringVarP(&PlotFileName, "plotfile", "p", "plot.png", "Output file name")
+	plotCmd.Flags().BoolVarP(&OptCombined, "combined", "c", false, "Combined plot")
 
 	rootCmd.AddCommand(plotCmd)
 }
@@ -89,5 +91,7 @@ func execPlotCmd(cmd *cobra.Command, args []string) {
 		logfiles.Analyze(arg)
 	}
 	basedate, _ := logfiles.DateOfZippedLogs(args[0])
-	logfiles.GeneratePlots(PlotFileName, "RLM "+RLMId+" "+basedate.Format(time.ANSIC))
+
+	logfiles.GeneratePlots(OptCombined, PlotFileName, "RLM "+RLMId+" "+basedate.Format(time.ANSIC), RLMId)
+
 }

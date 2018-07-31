@@ -89,13 +89,18 @@ func Analyze(nm string) {
 	}
 }
 
-func GeneratePlots(nm string, title string) {
+func GeneratePlots(comb bool, nm string, title string, rlmid string) {
 	if cpuTempStats != nil {
 		cpuTempStats.Plot("cputemp"+nm, title)
 	}
-	for idx, chart := range gatheredStats {
-		if chart != nil {
-			chart.Plot(itemNames[idx]+nm, title)
+
+	if comb {
+		CombinedPlot(gatheredStats, rlmid, title)
+	} else {
+		for idx, chart := range gatheredStats {
+			if chart != nil {
+				chart.Plot(itemNames[idx]+nm, title)
+			}
 		}
 	}
 	for k, v := range taggedStats {

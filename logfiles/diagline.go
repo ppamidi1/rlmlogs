@@ -82,6 +82,7 @@ var itemStatusLine = [...]string{
 	                                         Mem Free(sys):  640761856
 	                                         Mem Used(rlc):  48696
 	                                         Processes: 130  */
+var numPlots int
 
 func ValidItem(nm string) bool {
 	for _, opt := range itemNames {
@@ -107,6 +108,7 @@ func Index(nm string) int {
 
 func SetupStats(nm string) {
 	if ValidItem(nm) {
+		numPlots++
 		idx := Index(nm)
 		gatheredStats[idx] = New(nm)
 		switch idx {
@@ -134,6 +136,7 @@ func SetupStats(nm string) {
 	} else {
 		if nm == "CPUTemp" {
 			cpuTempStats = New("CPUTemp")
+			numPlots++
 		}
 	}
 }
