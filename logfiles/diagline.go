@@ -26,23 +26,82 @@ const (
 )
 
 var itemNames = [...]string{
-	"AM",
-	"AS",
-	"CS",
-	"SS",
-	"VS",
-	"AB",
-	"IP",
-	"FI",
-	"FO",
-	"FD",
-	"CPU_Usage",
+	"AM",   /* Application Mode                 */
+	"AS",   /* Application Current State        */
+	"CS",   /* Connection Manager Current State */
+	"SS",   /* Session Manager Current State    */
+	"VS",   /* Video Streamer Current State     */
+	"AB",   /* Active Bearer                    */
+	"IP",   /* Current IP Address               */
+	"FI",   /* Input Frames                     */
+	"FO",   /* Output Frames                    */
+	"FD",   /* Difference of above              */
+	"CPU_Usage", 
 	"Up_Time",
 	"Pct_Mem_Used_sys",
 	"Mem_Used_sys",
 	"Mem_Free_sys",
 	"Mem_Used_rlc",
 	"Processes"}
+var itemDescriptions = [...]string{
+		"Application Mode" ,
+		"Application Current State" ,
+		"Connection Manager Current State" ,
+		"Session Manager Current State" ,
+		"Video Streamer Current State" ,
+		"Active Bearer" ,
+		"Current IP Address" ,
+		"Input Frames" ,
+		"Output Frames" ,
+		"Difference of above" ,
+		"CPU_Usage" , 
+		"Up_Time" ,
+		"Pct_Mem_Used_sys",
+		"Mem_Used_sys",
+		"Mem_Free_sys",
+		"Mem_Used_rlc",
+		"Processes"}
+
+		/*
+	       "AM=%d\n"
+        "AS=%s\n"
+        "CS=%s\n"
+        "SS=%s\n"
+        "VS=%s\n"
+        "AB=%s\n"
+        "IP=%s\n"
+        "FI=%llu\n"
+        "FO=%llu\n"
+        "FD=%llu\n"
+        "CPU Usage: %lu%%\n"
+        "Up Time: %-10ld\n"
+        "%% Mem Used(sys):%-5.05f\n"
+        "Mem Used(sys):  %-10ld\n"
+        "Mem Free(sys):  %-10ld\n"
+        "Mem Used(rlc):  %-10ld\n"
+		"Processes: %-10d\n",
+		
+        app_get_rlm_serial(),
+        app_cm_mode(),
+		app_fsm_get_cur_state(),
+		
+        cm_fsm_get_cur_state(),
+        sm_fsm_get_cur_state(),
+		vs_fsm_get_cur_state(),
+		
+        cm_fsm_get_active_bearer_name(),
+        cm_get_cur_ip_address(),
+        vs_fsm_get_input_frames(),
+        vs_fsm_get_output_frames(),
+        vs_fsm_get_input_frames() - vs_fsm_get_output_frames(),
+        g_rlc_stats.sys_cpu_usage,
+        si.uptime,
+        mem_usage_percent,
+        si.totalram - si.freeram,
+        si.freeram,
+        ru.ru_maxrss,
+        si.procs
+	*/
 
 var itemStatusLine = [...]string{
 	"AM=",
@@ -93,8 +152,8 @@ func ValidItem(nm string) bool {
 	return false
 }
 func ShowValidItems() {
-	for _, opt := range itemNames {
-		fmt.Printf("%s\n", opt)
+	for idx, opt := range itemNames {
+		fmt.Printf("%s \t\t\t: %s\n", opt , itemDescriptions[idx])
 	}
 }
 func Index(nm string) int {
