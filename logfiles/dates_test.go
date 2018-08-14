@@ -44,6 +44,12 @@ func TestDateOfLogfile(t *testing.T) {
 	} else {
 		t.Log(err)
 	}
+	ts, err = DateOfLogfile("20180621_0002.log")
+	if err == nil {
+		t.Log(ts)
+	} else {
+		t.Log(err)
+	}
 }
 
 func TestDateOfZippedLogs(t *testing.T) {

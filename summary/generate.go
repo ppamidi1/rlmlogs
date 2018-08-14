@@ -12,12 +12,18 @@ var Verbose bool
 
 var logFileNames *regexp.Regexp
 var rlmsWithNoLogs []string
+var rlmsWithLogs []string
 
 func init() {
 	logFileNames = regexp.MustCompile("[0-9]+_[0-9]+.log")
 }
 
 func PrintSummaries() {
+	fmt.Printf("RLMs reporting with logs\n")
+	for _, rlm := range rlmsWithLogs {
+		fmt.Printf("%s\n", rlm)
+	}
+
 	fmt.Printf("RLMs which had no logs\n")
 	for _, rlm := range rlmsWithNoLogs {
 		fmt.Printf("%s\n", rlm)
@@ -47,6 +53,8 @@ func SummarizeRLM(rlmdir string) {
 		if Verbose {
 			fmt.Printf("%s did not have any logfiles\n", path.Base(rlmdir))
 		}
+	} else {
+		rlmsWithLogs = append(rlmsWithLogs, path.Base(rlmdir))
 	}
 }
 func Generate(toplevel string) {
