@@ -12,7 +12,12 @@ var Verbose bool
 
 var logFileNames *regexp.Regexp
 var rlmsWithNoLogs []string
-var rlmsWithLogs []string
+
+type LogDetails struct {
+	Name string
+	NumberOfLogFiles int
+}
+var rlmsWithLogs []LogDetails
 
 func init() {
 	logFileNames = regexp.MustCompile("[0-9]+_[0-9]+.log")
@@ -21,7 +26,7 @@ func init() {
 func PrintSummaries() {
 	fmt.Printf("RLMs reporting with logs\n")
 	for _, rlm := range rlmsWithLogs {
-		fmt.Printf("%s\n", rlm)
+		fmt.Printf("%s    - %d\n", rlm.Name, rlm.NumberOfLogFiles)
 	}
 
 	fmt.Printf("RLMs which had no logs\n")
@@ -54,7 +59,10 @@ func SummarizeRLM(rlmdir string) {
 			fmt.Printf("%s did not have any logfiles\n", path.Base(rlmdir))
 		}
 	} else {
-		rlmsWithLogs = append(rlmsWithLogs, path.Base(rlmdir))
+		var temp LogDetails
+		temp.Name = path.Base(rlmdir)
+		temp.NumberOfLogFiles = numlogfiles
+		rlmsWithLogs = append(rlmsWithLogs , temp)
 	}
 }
 func Generate(toplevel string) {
