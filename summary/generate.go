@@ -20,7 +20,8 @@ type LogDetails struct {
 var rlmsWithLogs []LogDetails
 
 func init() {
-	logFileNames = regexp.MustCompile("[0-9]+_[0-9]+.log")
+	logFileNames = regexp.MustCompile("\d{8}_\d{4}.log")
+	rlmDirNames = regexp.MustCompile("RL\d{5}")
 }
 
 func PrintSummaries() {
@@ -77,11 +78,11 @@ func Generate(toplevel string) {
 			return
 		}
 		for _, rlm := range rlms {
-			if rlm.IsDir() {
+			if rlm.IsDir() && rlmDirNames.MatchString(rlm.Name()) {
 				SummarizeRLM(path.Join(toplevel, rlm.Name()))
 			} else {
 				if Verbose {
-					fmt.Printf("Skipping %s. Not a directory\n", rlm.Name())
+					fmt.Printf("Skipping %s. Not an RLM directory\n", rlm.Name())
 				}
 			}
 		}
