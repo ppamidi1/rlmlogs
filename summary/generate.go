@@ -21,7 +21,7 @@ var rlmsWithLogs []LogDetails
 
 func init() {
 	logFileNames = regexp.MustCompile("\d{8}_\d{4}.log")
-	rlmDirNames = regexp.MustCompile("(?:.+\/)?RL\d{5}")
+	rlmDirNames = regexp.MustCompile("RL\d{5}")
 }
 
 func PrintSummaries() {
@@ -36,12 +36,6 @@ func PrintSummaries() {
 	}
 }
 func SummarizeRLM(rlmdir string) {
-	if !rlmDirNames.MatchString(rlmdir) {
-		if Verbose {
-			fmt.Printf("%s not an RLM directory\n", rlmdir)
-		}
-		return
-	}
 	if Verbose {
 		fmt.Printf("Summarizing %s\n", rlmdir)
 	}
@@ -84,11 +78,11 @@ func Generate(toplevel string) {
 			return
 		}
 		for _, rlm := range rlms {
-			if rlm.IsDir() {
+			if rlm.IsDir() && rlmDirNames.MatchString(rlm.Name()) {
 				SummarizeRLM(path.Join(toplevel, rlm.Name()))
 			} else {
 				if Verbose {
-					fmt.Printf("Skipping %s. Not a directory\n", rlm.Name())
+					fmt.Printf("Skipping %s. Not an RLM directory\n", rlm.Name())
 				}
 			}
 		}
