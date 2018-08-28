@@ -20,7 +20,8 @@ type LogDetails struct {
 var rlmsWithLogs []LogDetails
 
 func init() {
-	logFileNames = regexp.MustCompile("[0-9]+_[0-9]+.log")
+	logFileNames = regexp.MustCompile("\d{8}_\d{4}.log")
+	rlmDirNames = regexp.MustCompile("(?:.+\/)?RL\d{5}")
 }
 
 func PrintSummaries() {
@@ -35,6 +36,12 @@ func PrintSummaries() {
 	}
 }
 func SummarizeRLM(rlmdir string) {
+	if !rlmDirNames.MatchString(rlmdir) {
+		if Verbose {
+			fmt.Printf("%s not an RLM directory\n", rlmdir)
+		}
+		return
+	}
 	if Verbose {
 		fmt.Printf("Summarizing %s\n", rlmdir)
 	}
