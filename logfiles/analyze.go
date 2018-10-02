@@ -45,7 +45,7 @@ func ExtractCPUTemp(line string) (bool, time.Time, float32) {
 }
 
 func ConnectionStatusLine(line string) (bool, time.Time) {
-	if strings.Contains(line, "Connection Status") {
+	if strings.Contains(line, "SOM Version") {
 		tv, _ := ExtractTimeStamp(line)
 		return true, tv
 	}
@@ -88,19 +88,21 @@ func AnalyzeFile(rdr io.Reader, base time.Time) {
 		if connectionStatus {
 			found, valtype, valstr := ConnectionStatusDetailLine(line)
 			if found {
-				fmt.Printf("Found detail %d %s\n", valtype, valstr)
+				//fmt.Printf("Found detail %d %s\n", valtype, valstr)
 				if gatheredStats[valtype] != nil {
 					tempSample.At = connectionStatusTime
 					//val, _ := strconv.Atoi(strings.TrimSpace(valstr))
 					//tempSample.Value = float32(val)
 					tempSample.Value = ExtractValue(valtype, strings.TrimSpace(valstr))
 					gatheredStats[valtype].Add(tempSample)
-					fmt.Printf("Time %v : Type : %s Value %s %f\n", connectionStatusTime, itemStatusLine[valtype], valstr, tempSample.Value)
-				} else {
-					fmt.Printf("Not gathering the value\n")
+					if Verbose {
+					   fmt.Printf("Time %v : Type : %s Value %s %f\n", connectionStatusTime, itemStatusLine[valtype], valstr, tempSample.Value)
+					}
 				}
 			} else {
-				connectionStatus = false
+				if line[0:TimeStampLength] != blankTimeStamp {
+				   connectionStatus = false
+				}
 			}
 		} else {
 			found, attime, temp := ExtractCPUTemp(line)
